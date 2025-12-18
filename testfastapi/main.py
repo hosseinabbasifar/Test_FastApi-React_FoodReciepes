@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 
-
+from typing import Optional
 
 app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
 
@@ -46,6 +46,21 @@ def fetch_recipe(*, recipe_id: int) -> dict:
 
 
 
+
+@api_router.get("/search/", status_code=200)
+def search_recipes(
+    keyword: Optional[str] = None, max_results: Optional[int] = 10
+) -> dict:
+    """
+    Search for recipes based on label keyword
+    """
+    if not keyword:
+        # we use Python list slicing to limit results
+        # based on the max_results query parameter
+        return {"results": RECIPES[:max_results]}
+
+    results = filter(lambda recipe: keyword.lower() in recipe["label"].lower(), RECIPES)
+    return {"results": list(results)[:max_results]}
 
 
 
