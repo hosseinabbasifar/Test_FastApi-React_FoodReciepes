@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from testfastapi.db.session import get_db
 from testfastapi.db import crud
-from testfastapi.schemas import Recipe, RecipeCreate
+from testfastapi.schemas import Recipe, RecipeCreate,RecipeUpdate
 
 router = APIRouter()
 
@@ -47,3 +47,29 @@ def search_for_recipes(
     """
     results = crud.search_recipes(db=db, keyword=keyword)
     return results
+
+
+@router.put("/{recipe_id}", response_model=Recipe)
+def update_recipe(
+    recipe_id: int,
+    recipe_in: RecipeUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    یک دستور پخت موجود را به‌روزرسانی می‌کند.
+    """
+    db_recipe = crud.update_recipe(db, recipe_id=recipe_id, recipe_update=recipe_in)
+    if db_recipe is None:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    return db_recipe
+
+# و این Endpoint جدید را هم اضافه کنید
+@router.delete("/{recipe_id}")
+def delete_recipe(recipe_id: int, db: Session = Depends(get_db)):
+    """
+    یک دستور پخت را حذف می‌کند.
+    """
+    db_recipe = crud.delete_recipe(db, recipe_id=recipe_id)
+    if db_recipe is None:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+    return {"detail": f"Recipe with ID {recipe_id} deleted successfully."}
