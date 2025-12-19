@@ -1,23 +1,14 @@
-# پوشه‌های node_modules
-recipe-frontend/node_modules/
-
-# پوشه‌های محیط مجازی پایتون
-TestFastApi/.venv
-TestFastApi/venv
-
-# فایل‌های کش و لاگ
-TestFastApi/__pycache__/
-TestFastapi/*.pyc
-TestFastApi/.pytest_cache/
-
-
+# Python
+__pycache__/
+*.pyc
 .env
-.venv
-env/
+venv/
 
 
+# Node
+node_modules/
+dist/
 
-
-*.log
-.vscode/
-.idea/
+# OS
+.DS_Store
+Thumbs.db
