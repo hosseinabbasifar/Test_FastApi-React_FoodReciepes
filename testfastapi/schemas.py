@@ -2,7 +2,9 @@ from pydantic import BaseModel, HttpUrl
 
 from typing import Sequence
 
-
+class Config:
+        from_attributes = True
+        
 class Recipe(BaseModel):
     id: int
     label: str
@@ -18,4 +20,3 @@ class RecipeCreate(BaseModel):
     label: str
     source: str
     url: HttpUrl
-    submitter_id: int
